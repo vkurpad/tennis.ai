@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+  {{ super() }}
+ <script>
+     var count = 1;
+
+     $( document ).ready(function() {
+        $.get( "images", function( data ) {
+            console.log("Starting timer");
+            var tid = setInterval(mycode, 2000);
+            
+            function mycode() {
+                console.log("tick" + count);
+                $("#frame").attr('src','/static/images/' +data[count] );
+                count++;
+                if(data.length <= count)
+                    abortTimer();
+}
+
+            function abortTimer() { // to be called when you want to stop the timer
+            clearInterval(tid);
+            }
+  
+});
+
+});
+
+function send(state)
+{
+    var payload = {
+        frame:  $("#frame").attr("src").split("/")[3],
+        label: state
+    };
+    
+    console.log("@@@@@@@@@@@@@@@@@@sending  " + JSON.stringify(payload));
+    $.ajax({
+  type: "POST",
+  contentType: "application/json; charset=utf-8",
+  url: "/label",
+  data: JSON.stringify(payload),
+  success: function (data) {
+    console.log(data);
+    
+  },
+  dataType: "json"
+});
+}
+
+     </script>
+{% endblock %}
+{% block content %}
+  <h1>Index</h1>
+  <div id="main">
+      <img id="frame" src="" width="800">
+      <div id="label">
+         <button class="button" onclick="send('play');">Playing</button>
+         <button class="button stop" onclick="send('stop');">Stopped</button>
+          
+      </div>
+      <div class="result"></div>
+      
+  </div>
+{% endblock %}
