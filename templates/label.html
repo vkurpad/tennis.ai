@@ -8,7 +8,7 @@
      $( document ).ready(function() {
         $.get( "images", function( data ) {
             console.log("Starting timer");
-            var tid = setInterval(mycode, 2000);
+            var tid = setInterval(mycode, 1500);
             
             function mycode() {
                 console.log("tick" + count);
@@ -33,6 +33,12 @@ function send(state)
         label: state
     };
     
+    
+    if( state == "play") 
+        $(".status").css( "background-color", "green" );
+    if(state == "stop") 
+        $(".status").css( "background-color", "gray" );
+
     console.log("@@@@@@@@@@@@@@@@@@sending  " + JSON.stringify(payload));
     $.ajax({
   type: "POST",
@@ -58,7 +64,11 @@ function send(state)
          <button class="button stop" onclick="send('stop');">Stopped</button>
           
       </div>
-      <div class="result"></div>
+      <div class="result">
+          <div class="status">
+                Current Status
+          </div>
+      </div>
       
   </div>
 {% endblock %}

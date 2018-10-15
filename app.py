@@ -31,10 +31,19 @@ def index(start=None):
 
 @app.route("/images")
 def get_images(start=None):
+    with open('labels.txt', 'rb') as f:
+        f.seek(-2, os.SEEK_END)
+        while f.read(1) != b'\n':
+            f.seek(-2, os.SEEK_CUR) 
+        #print("Hello" + f.readline().decode())
+        last = f.readline().decode()
+    lastImg = last.split(",")[0]
     images = os.listdir(os.path.join(app.static_folder, "images"))
     #print(images)
     images.sort(key=alphanum_key)
-    print(images)
+    index = images.index(lastImg)
+    images = images[index:len(images)]
+    #print(images)
     return jsonify(images)
 
 @app.route("/label", methods=['POST'])
