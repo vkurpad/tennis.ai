@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+  {{ super() }}
+ <script>
+     var count = 1;
+
+     $( document ).ready(function() {
+       
+
+        console.log("Do Something here");
+
+});
+
+
+
+     </script>
+{% endblock %}
+{% block content %}
+  <h1>Index</h1>
+  <div id="main">
+      Here's the list of videos waiting to be processed.
+      <ul>
+        {% for n in videos %}
+        <li><a href="/label/{{n}}">{{n}}</a></li>
+        {% endfor %}
+      </ul>
+
+  </div>
+{% endblock %}
