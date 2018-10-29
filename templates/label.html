@@ -6,13 +6,15 @@
      var count = 1;
 
      $( document ).ready(function() {
-        $.get( "images", function( data ) {
-            console.log("Starting timer");
+         var id = $("#id").attr("value");
+         console.log(id);
+        $.get( "/images/" + id, function( data ) {
+            console.log(data);
             var tid = setInterval(mycode, 1500);
             
             function mycode() {
                 console.log("tick" + count);
-                $("#frame").attr('src','/static/images/' +data[count] );
+                $("#frame").attr('src','/static/images/' + id + "/" +data[count] );
                 count++;
                 if(data.length <= count)
                     abortTimer();
@@ -25,11 +27,14 @@
 });
 
 });
-
+function option()
+{
+    console.log("selected option");
+}
 function send(state)
 {
     var payload = {
-        frame:  $("#frame").attr("src").split("/")[3],
+        frame:  $("#frame").attr("src").split("/")[4],
         label: state
     };
     
@@ -38,12 +43,12 @@ function send(state)
         $(".status").css( "background-color", "green" );
     if(state == "stop") 
         $(".status").css( "background-color", "gray" );
-
+    var id = $("#id").attr("value");
     console.log("@@@@@@@@@@@@@@@@@@sending  " + JSON.stringify(payload));
     $.ajax({
   type: "POST",
   contentType: "application/json; charset=utf-8",
-  url: "/label",
+  url: "/label/" + id,
   data: JSON.stringify(payload),
   success: function (data) {
     console.log(data);
@@ -56,7 +61,15 @@ function send(state)
      </script>
 {% endblock %}
 {% block content %}
+     <input id="id" type="hidden" value="{{video}}">
   <h1>Index</h1>
+  <div id="header">
+      <h2>{{file_name}}</h2>
+      Sample (Frames /Second): <select id="fps" onselect="option();">
+          <option>1 </option>
+      </select>
+
+  </div>
   <div id="main">
       <img id="frame" src="" width="800">
       <div id="label">

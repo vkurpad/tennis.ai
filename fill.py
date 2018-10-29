@@ -8,7 +8,7 @@ def get_last_line(fPath):
             f.seek(-2, os.SEEK_END)
             while f.read(1) != b'\n':
                 f.seek(-2, os.SEEK_CUR) 
-            #print("Hello" + f.readline().decode())
+            #print("Hello" + f.readl    ine().decode())
             last = f.readline().decode()
             return last
     else:
