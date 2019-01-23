@@ -4,6 +4,7 @@ import string
 
 def get_last_line(fPath):
     if os.path.exists(fPath):
+
         with open(fPath, 'rb') as f:
             f.seek(-2, os.SEEK_END)
             while f.read(1) != b'\n':

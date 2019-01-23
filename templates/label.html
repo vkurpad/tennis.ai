@@ -4,17 +4,19 @@
   {{ super() }}
  <script>
      var count = 1;
-
+     var refresh = 1500;
+     var freq = 1;
      $( document ).ready(function() {
          var id = $("#id").attr("value");
          console.log(id);
         $.get( "/images/" + id, function( data ) {
             console.log(data);
-            var tid = setInterval(mycode, 1500);
+            var tid = setInterval(mycode, refresh);
             
             function mycode() {
                 console.log("tick" + count);
                 $("#frame").attr('src','/static/images/' + id + "/" +data[count] );
+                
                 count++;
                 if(data.length <= count)
                     abortTimer();
@@ -30,6 +32,18 @@
 function option()
 {
     console.log("selected option");
+    var x = $("#fps").value;
+    freq = parseFloat(x);
+    console.log(x);
+}
+
+function refreshOption()
+{
+    console.log("selected option");
+    var x = $("#refresh").value;
+    x  *= 1000;
+    console.log(x);
+
 }
 function send(state)
 {
@@ -63,12 +77,26 @@ function send(state)
 {% block content %}
      <input id="id" type="hidden" value="{{video}}">
   <h1>Index</h1>
-  <div id="header">
+  <div id="header" style="border: 1px solid gray; padding: 2px; margin-bottom: 5px;">
       <h2>{{file_name}}</h2>
-      Sample (Frames /Second): <select id="fps" onselect="option();">
+      Sample Rate (Seconds between Frames): <select id="fps" onchange="option();">
           <option>1 </option>
-      </select>
+          <option>1.5 </option>
+          <option>2 </option>
+          <option>2.5 </option>
+          <option>3 </option>
 
+      </select>
+      <br/>
+       Refresh Rate (Duration Frame is Displayed): <select id="refresh" onchange="refreshOption();">
+          <option>0.5 </option>
+          <option>1 </option>
+          <option>1.5 </option>
+          <option>2 </option>
+          <option>3 </option>
+
+      </select>
+        
   </div>
   <div id="main">
       <img id="frame" src="" width="800">

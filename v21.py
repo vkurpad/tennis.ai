@@ -2,7 +2,8 @@ import cv2
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 print(dir_path)
-f = "20161001_120007.mov"
+f = "1b.mov"
+f1 = f.split(".")[0]
 fpath = os.path.join(dir_path, "static", "videos", f)
 print(fpath)
 vidcap = cv2.VideoCapture(fpath)
@@ -13,10 +14,10 @@ fps = vidcap.get(cv2.CAP_PROP_FPS)
 fps = int(fps)
 dimensions = image.shape
 print('Image Dimension    : ',dimensions) 
-info = os.path.join(dir_path, "static", "images", "20161001_120007","info.txt")
+info = os.path.join(dir_path, "static", "images", f1,"info.txt")
 
 print("Frames per second using video.get(cv2.CAP_PROP_FPS) : {0}".format(fps))
-imgPath = os.path.join(dir_path, "static", "images", f.split(".")[0])
+imgPath = os.path.join(dir_path, "static", "images", f1)
 #os.mkdir(imgPath)
 with open(info, 'a') as fw:
     fw.write(f"{fpath}, {dimensions}, {fps}fps\n")
